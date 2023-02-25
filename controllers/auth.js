@@ -38,10 +38,12 @@ exports.login = async (req, res) => {
       const token = jwt.sign(
         {
           email: user.email,
-          id: user.id,
         },
         TOKEN_SECRET
       );
       res.json({ error: null, data: "Login exitoso", token });
+    })
+    .catch(() => {
+      res.status(400).json({ error: true, data: "El email no es válido" });
     });
 };
