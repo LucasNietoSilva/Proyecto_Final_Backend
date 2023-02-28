@@ -4,12 +4,17 @@ const jwt = require("jsonwebtoken");
 const { verifyToken, TOKEN_SECRET } = require("../middlewares/validate-jwt");
 
 exports.register = async (req, res) => {
+  console.log(req.body);
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(req.body.password, salt);
 
   const newUser = {
     email: req.body.email,
     password: password,
+    nombre: req.body.nombre,
+    apellido: req.body.apellido,
+    fecha_nacimiento: req.body.fecha_nacimiento,
+    departamento: req.body.departamento,
   };
 
   knex("users_inmobiliaria")
