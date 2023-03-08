@@ -1,11 +1,12 @@
 const knex = require("../config/knexfile");
 
 exports.mostrarPublicaciones = (req, res) => {
-  knex("publicaciones_inmobiliaria")
+  knex('publicaciones_inmobiliaria')
     .then((resultado) => {
       res.json(resultado);
     })
     .catch((error) => {
+      console.log(error);
       res.status(400).json({ error: error.message });
     });
 };
