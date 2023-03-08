@@ -36,3 +36,21 @@ exports.agregarPublicacion = (req, res) => {
       });
     });
 };
+
+exports.filtrarPublicaciones = (req, res) => {
+  const depto = req.query.departamento;
+  const estado = req.query.estado;
+  const inmueble = req.query.inmueble;
+  const dormitorios = Number(req.query.numeroDeDormitorios);
+  knex("publicaciones_inmobiliaria as p")
+    .where("p.departamento", "=", depto)
+    .where("p.estado", "=", estado)
+    .where("p.tipo", "=", inmueble)
+    /* .where("p.dormitorios", "=", dormitorios) */
+    .then((resultado) => {
+      res.json(resultado);
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error.message });
+    });
+};
