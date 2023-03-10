@@ -1,11 +1,12 @@
 const knex = require("../config/knexfile");
 
 exports.mostrarPublicaciones = (req, res) => {
-  knex("publicaciones_inmobiliaria")
+  knex('publicaciones_inmobiliaria')
     .then((resultado) => {
       res.json(resultado);
     })
     .catch((error) => {
+      console.log(error);
       res.status(400).json({ error: error.message });
     });
 };
@@ -35,5 +36,23 @@ exports.agregarPublicacion = (req, res) => {
       res.status(400).json({
         error: error.message,
       });
+    });
+};
+
+exports.filtrarPublicaciones = (req, res) => {
+  const depto = req.query.departamento;
+  const estado = req.query.estado;
+  const inmueble = req.query.inmueble;
+  const dormitorios = Number(req.query.numeroDeDormitorios);
+  knex("publicaciones_inmobiliaria as p")
+    .where("p.departamento", "=", depto)
+    .where("p.estado", "=", estado)
+    .where("p.tipo", "=", inmueble)
+    /* .where("p.dormitorios", "=", dormitorios) */
+    .then((resultado) => {
+      res.json(resultado);
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error.message });
     });
 };

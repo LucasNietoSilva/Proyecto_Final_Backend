@@ -1,24 +1,25 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+require('dotenv').config(); 
 
-const TOKEN_SECRET = "UnaClaveParaFirmarElToken";
+module.exports = function (req, res, next) {
+    try {
+        const jwtToken = req.header('token');
+        
+        // If no token returned, decline authorization
+        if(!jwtToken) {
 
-const verifyToken = (req, res, next) => {
-  const token = req.header("auth-token");
-  if (!token) {
-    return res.status(401).json({ error: "acceso denegado" });
-  }
+            return res.status(403).json('Not authorized');
+        }
 
-  try {
-    const verified = jwt.verify(token, TOKEN_SECRET);
-    console.log(verified);
-    req.user = verified;
-    next();
-  } catch (error) {
-    res.status(400).json({ error: "El Token no es válido" });
-  }
-};
+        // verify token, get user id
+        const payload = jwt.verify(jwtToken, process.env.jwtSecret);
 
-module.exports = {
-  verifyToken,
-  TOKEN_SECRET,
+        req.user = payload.user;
+
+        next();
+
+        
+    } catch (err) {
+        return res.status(403).json('Not authorized');   
+    }
 };

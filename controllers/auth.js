@@ -52,3 +52,4 @@ exports.login = async (req, res) => {
       res.status(400).json({ error: true, data: "El email no es válido" });
     });
 };
+
