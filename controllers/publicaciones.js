@@ -15,7 +15,9 @@ exports.buscarPublicacion = (req, res) => {
   const id = Number(req.params.id);
   knex("publicaciones_inmobiliaria as p")
     .where("p.propiedad_id", "=", id)
+    .join("imagenes_propiedad as im", "p.propiedad_id", "im.publicacion_id")
     .then((resultado) => {
+      console.log(resultado)
       res.json(resultado);
     })
     .catch((error) => {

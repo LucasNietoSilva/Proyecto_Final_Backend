@@ -5,6 +5,28 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+
+
+exports.consultas = async (req, res) => {
+  console.log(req.body);
+  const consultasUser = {
+    nombreyapellido: req.body.nombre_apellido,
+    email: req.body.email,
+    consulta: req.body.consulta
+  }
+
+  knex("consultas_inmobiliaria")
+    .insert(consultasUser)
+    .then(() => {
+      res.status(200).json({success: true, consultasUser: consultasUser});
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: error.message,
+      });
+    });
+};
+
 exports.register = async (req, res) => {
   console.log(req.body);
   const salt = await bcrypt.genSalt(10);
