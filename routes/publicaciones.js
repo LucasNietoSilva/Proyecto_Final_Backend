@@ -5,13 +5,16 @@ const {
   buscarPublicacion,
   agregarPublicacion,
   filtrarPublicaciones,
+  /*   agregarImg, */
 } = require("../controllers/publicaciones");
+const { upload } = require("../middlewares/upload-img");
 
 const router = express.Router();
 
 router.get("/publicaciones", mostrarPublicaciones);
 router.get("/buscar/:id", buscarPublicacion);
 router.get("/publicaciones-buscar", filtrarPublicaciones);
-router.post("/publicaciones/nuevo", agregarPublicacion);
+router.post("/publicaciones/nuevo", upload, agregarPublicacion);
+/* router.post("/publicaciones/nuevaImg", upload, agregarImg); */
 
 module.exports = router;
