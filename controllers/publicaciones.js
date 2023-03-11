@@ -1,7 +1,7 @@
 const knex = require("../config/knexfile");
 
 exports.mostrarPublicaciones = (req, res) => {
-  knex('publicaciones_inmobiliaria')
+  knex("publicaciones_inmobiliaria")
     .then((resultado) => {
       res.json(resultado);
     })
@@ -32,12 +32,44 @@ exports.agregarPublicacion = (req, res) => {
     .then(() => {
       res.json({ message: "se ha agregado una nueva publicacion" });
     })
+    /*     .returning("propiedad_id") */
     .catch((error) => {
       res.status(400).json({
         error: error.message,
       });
     });
 };
+/*     exports.agregarImg = (req, res) => {
+      req.getConnection((err, conn) => {
+        if (err) return res.send(err);
+        const type = req.file.mimetype;
+        const name = req.file.originalname;
+        const date = fs.readFileSync(
+          path.join(__dirname, "../imgs_back/" + req.file.filename)
+        );
+        knex("publicaciones_inmobiliaria").insert;
+      };
+
+
+
+    conn.query(
+      "INSERT INTO " + req.params.tabla + " set ?",
+      [{ type, name, date }],
+      (err, rows) => {
+        console.log(
+          err
+            ? "Err INSERT INTO " + req.params.tabla + " " + err
+            : req.params.tabla + ": Image added!"
+        );
+        res.json(
+          err
+            ? { err: "Error al cargar la imagen" }
+            : { msg: "Imagen cargada satisfactoriamente" }
+        );
+      }
+    );
+  });
+}; */
 
 exports.filtrarPublicaciones = (req, res) => {
   const depto = req.query.departamento;

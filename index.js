@@ -17,6 +17,7 @@ app.use(cors());
 app.use("/api", publicacionesRouter);
 app.use("/auth", authRouter);
 
+//Inicializar el servidor
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
