@@ -1,7 +1,9 @@
 const knex = require("../config/knexfile");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
+// const { verifyToken, TOKEN_SECRET } = require("../middlewares/validate-jwt");
+
 const jwt = require("jsonwebtoken");
-const { verifyToken, TOKEN_SECRET } = require("../middlewares/validate-jwt");
+require("dotenv").config();
 
 exports.register = async (req, res) => {
   console.log(req.body);
@@ -29,27 +31,38 @@ exports.register = async (req, res) => {
     });
 };
 
+
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  knex("users_inmobiliaria")
-    .where("email", email)
-    .then(async (userDB) => {
-      let user = userDB[0];
+
+  const usuario = {
+    email: req.body.email,
+    password: req.body.password,
+  }
+  await knex
+    .from("users_inmobiliaria")
+    .where("email", usuario.email)
+    .then(async (logued) => {
+      let user = logued[0];
       console.log(user);
-      const validPassword = await bcrypt.compare(password, user.password);
+      if (!usuario.email) {
+        return res.status(400).json({ error: "Email incorrecto" });
+      }
+      const validPassword = await bcrypt.compare(usuario.password, user.password);
       if (!validPassword) {
         return res.status(400).json({ error: "Contraseña no válida" });
       }
       const token = jwt.sign(
         {
+          id: user.id,
+          name: user.nombre,
           email: user.email,
+          permisos: user.permisos
         },
-        TOKEN_SECRET
-      );
-      res.json({ error: null, data: "Login exitoso", token });
+        process.env.TOKEN_SECRET
+      )
+      res.status(200).json({ error: null, data: "Login exitoso", token });
     })
     .catch(() => {
-      res.status(400).json({ error: true, data: "El email no es válido" });
+      res.status(400).json({ error: error.message });
     });
 };
-

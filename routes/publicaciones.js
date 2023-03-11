@@ -14,4 +14,5 @@ router.get("/buscar/:id", buscarPublicacion);
 router.get("/publicaciones-buscar", filtrarPublicaciones);
 router.post("/publicaciones/nuevo", agregarPublicacion);
 
+
 module.exports = router;
