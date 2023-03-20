@@ -14,8 +14,6 @@ const router = express.Router();
 router.get("/publicaciones", mostrarPublicaciones);
 router.get("/buscar/:id", buscarPublicacion);
 router.get("/publicaciones-buscar", filtrarPublicaciones);
-router.post("/publicaciones/nuevo", upload, agregarPublicacion);
-/* router.post("/publicaciones/nuevaImg", upload, agregarImg); */
-
+router.post("/publicaciones/nuevo", /* upload, */ agregarPublicacion);
 
 module.exports = router;

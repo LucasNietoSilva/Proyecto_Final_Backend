@@ -17,7 +17,7 @@ exports.buscarPublicacion = (req, res) => {
     .where("p.propiedad_id", "=", id)
     .join("imagenes_propiedad as im", "p.propiedad_id", "im.publicacion_id")
     .then((resultado) => {
-      console.log(resultado)
+      console.log(resultado);
       res.json(resultado);
     })
     .catch((error) => {
